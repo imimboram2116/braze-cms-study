@@ -90,6 +90,11 @@ mark{background:#cfe0f5;color:inherit;padding:0 2px;border-radius:3px}
 .seg label.on{border-color:var(--brand);background:var(--brand-soft)}
 .cardans{background:var(--brand-soft);border-radius:10px;padding:12px 14px;margin-top:6px;font-size:15px}
 .cardans p{margin:2px 0;white-space:pre-wrap}
+.ko{display:block;color:var(--sub);font-size:13px;font-weight:400;margin:1px 0 4px;white-space:pre-wrap}
+.ko::before{content:"해석 ";font-size:11px;font-weight:700;color:var(--brand);opacity:.7}
+.slide p.ko{margin:0 0 6px}
+#koToggleWrap{display:flex;align-items:center;gap:8px;font-size:14px;margin:-6px 0 12px}
+body.noko .ko{display:none}
 </style>
 </head>
 <body>
@@ -104,6 +109,8 @@ mark{background:#cfe0f5;color:inherit;padding:0 2px;border-radius:3px}
     <button id="tabStudy">예상문제 정리</button>
     <button id="tabDeck">전형 확인용</button>
   </div>
+
+  <label id="koToggleWrap"><input type="checkbox" id="koToggle" checked> 영어 원문 밑에 한국어 해석 보기</label>
 
   <!-- 퀴즈 -->
   <section id="quiz">
@@ -183,18 +190,29 @@ mark{background:#cfe0f5;color:inherit;padding:0 2px;border-radius:3px}
 
   <!-- 전형 확인용 슬라이드 원문 -->
   <section id="deckView" class="hidden">
-    <div class="card muted">구글 슬라이드 "(DO NOT SHARE) MARKETER Certification" 35장을 원문 그대로 옮겼다 (2026-11-20). <mark>파란 칠</mark>은 슬라이드에서 강조 표시된 부분, [그림]은 슬라이드 속 이미지에 적힌 글자다.</div>
+    <div class="card muted">구글 슬라이드 "(DO NOT SHARE) MARKETER Certification" 35장을 원문 그대로 옮겼다 (2026-11-20). <mark>파란 칠</mark>은 슬라이드에서 강조 표시된 부분, [그림]은 슬라이드 속 이미지에 적힌 글자다. 회색 "해석" 줄은 원본에 없는 한국어 번역이다.</div>
     <div id="deckBody"></div>
   </section>
 </div>
 
 <script src="data.js"></script>
 <script src="deck.js"></script>
+<script src="ko.js"></script>
 <script>
 const $ = s => document.querySelector(s);
 const KEYS = ["①","②","③","④","⑤"];
 const esc = s => String(s).replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const koSpan = t => { const k = koOf(t); return k ? `<span class="ko">${esc(k)}</span>` : ""; };
+const withKo = t => esc(t) + koSpan(t);
+const linesWithKo = t => String(t).split("\n").map(l => `<div>${esc(l) || "&nbsp;"}${koSpan(l)}</div>`).join("");
 function store(k, v){ try{ if(v === undefined) return JSON.parse(localStorage.getItem(k)); localStorage.setItem(k, JSON.stringify(v)); }catch(e){ return null; } }
+
+/* ---------- 해석 켜고 끄기 ---------- */
+(function(){
+  const saved = store("braze_ko");
+  if(saved === false){ $("#koToggle").checked = false; document.body.classList.add("noko"); }
+  $("#koToggle").onchange = e => { document.body.classList.toggle("noko", !e.target.checked); store("braze_ko", e.target.checked); };
+})();
 
 /* ---------- 문제 묶음 ---------- */
 const SETS = {
@@ -231,10 +249,10 @@ $("#tabDeck").onclick = () => showTab("deckView");
       const right = q.accept ? new Set(q.accept.flat()) : new Set();
       return `<details><summary><span class="num">Q${q.n}</span>${esc(q.title)}</summary>
       <div class="body">
-        <div class="qtext">${esc(q.q)}</div>
-        <ol class="opts">${q.o.map((o, i) => `<li class="${right.has(i+1) ? "ans" : ""}">${q.code ? `<code>${esc(o)}</code>` : esc(o)}</li>`).join("")}</ol>
+        <div class="qtext">${linesWithKo(q.q)}</div>
+        <ol class="opts">${q.o.map((o, i) => `<li class="${right.has(i+1) ? "ans" : ""}">${q.code ? `<code>${esc(o)}</code>` : withKo(o)}</li>`).join("")}</ol>
         <div class="ansline">예상 답안: ${esc(q.a)}</div>
-        <ul class="exp">${q.e.map(x => `<li>${esc(x)}</li>`).join("")}</ul>
+        <ul class="exp">${q.e.map(x => `<li>${withKo(x)}</li>`).join("")}</ul>
       </div></details>`;
     }).join("")}
   `).join("");
@@ -249,10 +267,11 @@ $("#tabDeck").onclick = () => showTab("deckView");
     else if(t.startsWith("[그림]")) cls = "img";
     else if(/^(==)?(Correct|Incorrect)(==)?$/.test(t)) cls = "lbl";
     const html = esc(t).replace(/==(.+?)==/g, "<mark>$1</mark>");
-    return `<p class="${cls}">${html}</p>`;
+    const k = cls === "lbl" ? "" : koOf(l);
+    return `<p class="${cls}">${html}</p>` + (k ? `<p class="ko">${esc(k)}</p>` : "");
   };
   $("#deckBody").innerHTML = DECK_SLIDES.map((s, i) =>
-    `<div class="slide"><div class="sh"><span class="sn">${i + 1}</span>${esc(s.h)}</div>${s.lines.map(line).join("")}</div>`).join("");
+    `<div class="slide"><div class="sh"><span class="sn">${i + 1}</span>${esc(s.h)}${koSpan(s.h)}</div>${s.lines.map(line).join("")}</div>`).join("");
 })();
 
 /* ---------- 퀴즈 설정 ---------- */
@@ -308,7 +327,7 @@ function render(){
   $("#qScore").textContent = `맞힘 ${scored.filter(r => r.ok).length} / ${scored.length}`;
   $("#bar").style.width = (idx / deck.length * 100) + "%";
   $("#qMeta").innerHTML = `<span class="chip">${esc(groupLabel(q))}</span><span class="chip">${curSet === "mock" ? "Q" + q.n : esc(q.title)}</span>${q.status ? `<span class="chip warn">${q.status}</span>` : ""}`;
-  $("#qText").textContent = q.q;
+  $("#qText").innerHTML = linesWithKo(q.q);
   $("#verdict").innerHTML = "";
   hide("nextRow", true); hide("selfRow", true);
   $("#nextBtn").textContent = idx === deck.length - 1 ? "결과 보기" : "다음 문제";
@@ -320,7 +339,7 @@ function render(){
   }
   hide("revealRow", true);
   $("#opts").innerHTML = q.o.map((o, i) =>
-    `<button class="opt" data-k="${i+1}"><span class="k">${KEYS[i]}</span><span class="${q.code ? "code" : ""}">${esc(o)}</span></button>`).join("");
+    `<button class="opt" data-k="${i+1}"><span class="k">${KEYS[i]}</span><span><span class="${q.code ? "code" : ""}">${esc(o)}</span>${koSpan(o)}</span></button>`).join("");
   document.querySelectorAll(".opt").forEach(b => b.onclick = () => pick(+b.dataset.k));
   $("#multiHint").textContent = q.pick > 1 ? `${q.pick}개를 고른 뒤 채점하기를 누르세요.` : "";
   hide("gradeRow", q.pick === 1);
@@ -360,7 +379,7 @@ function grade(){
   $("#verdict").innerHTML = `<div class="verdict ${cls}">
       <div class="t">${title}</div>
       <div>${label}: <b>${esc(q.a)}</b>${scored ? ` &nbsp;|&nbsp; 내 답: ${mine.map(k => KEYS[k-1]).join(", ")}` : ""}</div>
-      ${q.e.length ? `<ul>${q.e.map(x => `<li>${esc(x)}</li>`).join("")}</ul>` : ""}
+      ${q.e.length ? `<ul>${q.e.map(x => `<li>${withKo(x)}</li>`).join("")}</ul>` : ""}
     </div>`;
   hide("nextRow", false);
   const s = results.filter(r => r.scored);
@@ -370,7 +389,7 @@ function grade(){
 $("#revealBtn").onclick = () => {
   const q = deck[idx];
   hide("revealRow", true);
-  $("#verdict").innerHTML = `<div class="cardans"><div class="muted">A.</div>${q.ans.map(x => `<p>${esc(x)}</p>`).join("")}</div>`;
+  $("#verdict").innerHTML = `<div class="cardans"><div class="muted">A.</div>${q.ans.map(x => `<p>${withKo(x)}</p>`).join("")}</div>`;
   hide("selfRow", false);
 };
 function selfMark(ok){
