@@ -165,7 +165,7 @@ const $ = s => document.querySelector(s);
 const KEYS = ["①","②","③","④","⑤"];
 const esc = s => String(s).replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
 const dom = id => DOMAINS.find(d => d.id === id);
-const ansText = q => q.accept ? (q.acceptNote || q.accept.map(a => a.map(k => KEYS[k-1]).join(", ")).join(" 또는 ")) : "정답 확정 보류";
+const ansText = q => q.a;
 
 function store(k, v){ try{ if(v === undefined) return JSON.parse(localStorage.getItem(k)); localStorage.setItem(k, JSON.stringify(v)); }catch(e){ return null; } }
 
@@ -190,12 +190,11 @@ $("#tabStudy").onclick = () => showTab("study");
     <div class="card"><h3>핵심 개념</h3><div class="concepts">${d.concepts.map(c => `<div><b>${esc(c[0])}</b>${esc(c[1])}</div>`).join("")}</div></div>
     ${QUESTIONS.filter(q => q.d === d.id).map(q => {
       const right = q.accept ? new Set(q.accept.flat()) : new Set();
-      return `<details><summary><span class="num">Q${q.n}</span>${esc(q.title)} ${q.status ? `<span class="chip warn">${q.status}</span>` : ""}</summary>
+      return `<details><summary><span class="num">Q${q.n}</span>${esc(q.title)}</summary>
       <div class="body">
         <div class="qtext ${q.code ? "" : ""}">${esc(q.q)}</div>
-        ${q.note ? `<div class="muted">${esc(q.note)}</div>` : ""}
         <ol class="opts">${q.o.map((o, i) => `<li class="${right.has(i+1) ? "ans" : ""}">${q.code ? `<code>${esc(o)}</code>` : esc(o)}</li>`).join("")}</ol>
-        <div class="ansline">정답: ${esc(ansText(q))}</div>
+        <div class="ansline">예상 답안: ${esc(ansText(q))}</div>
         <ul class="exp">${q.e.map(x => `<li>${esc(x)}</li>`).join("")}</ul>
       </div></details>`;
     }).join("")}
@@ -244,7 +243,7 @@ function render(){
   const d = dom(q.d);
   $("#qMeta").innerHTML = `<span class="chip">${d.id}. ${d.ko}</span><span class="chip">Q${q.n}</span>${q.status ? `<span class="chip warn">${q.status}</span>` : ""}`;
   $("#qText").textContent = q.q;
-  $("#qNote").textContent = q.note || "";
+  $("#qNote").textContent = "";
   $("#opts").innerHTML = q.o.map((o, i) =>
     `<button class="opt" data-k="${i+1}"><span class="k">${KEYS[i]}</span><span class="${q.code ? "code" : ""}">${esc(o)}</span></button>`).join("");
   document.querySelectorAll(".opt").forEach(b => b.onclick = () => pick(+b.dataset.k));
@@ -287,7 +286,7 @@ function grade(){
   const title = !scored ? "원본도 정답을 확정하지 못한 문제" : ok ? "정답!" : "오답";
   $("#verdict").innerHTML = `<div class="verdict ${cls}">
       <div class="t">${title}</div>
-      <div>정답: <b>${esc(ansText(q))}</b>${scored ? ` &nbsp;|&nbsp; 내 답: ${mine.map(k => KEYS[k-1]).join(", ")}` : ""}</div>
+      <div>예상 답안: <b>${esc(ansText(q))}</b>${scored ? ` &nbsp;|&nbsp; 내 답: ${mine.map(k => KEYS[k-1]).join(", ")}` : ""}</div>
       <ul>${q.e.map(x => `<li>${esc(x)}</li>`).join("")}</ul>
     </div>`;
   $("#nextRow").classList.remove("hidden");
