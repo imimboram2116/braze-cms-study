@@ -945,6 +945,14 @@
 | Assign Conversion Event | 런치 후 고객이 어떤 행동까지 하면 전환으로 볼지 정하는 설정 | [강의4 00:16~00:18] |
 
 - 사용자가 특정 행동을 하면 더 이상 메시지를 받지 않게 하는 기능 2개: Global Exit Criteria는 정답("가장 정답에 가까운 정답"). Winning Path, Assign Conversion Event는 오답. 두 번째 정답은 Delivery Validation으로 보이나 강사가 분명히 말하지 않음 [강의4 00:16~00:18]
+  - **Braze AI 확인**: 둘 다 이후 메시지 수신을 막을 수 있지만 적용 방식이 다름. 따라서 이 문제의 두 번째 정답은 Delivery Validation으로 보는 것이 맞음. 다른 오답(Winning Path, Assign Conversion Event)은 메시지 수신을 막는 기능이 아님 [Braze AI 확인 11/20] [강의4 00:16~00:18]
+
+| 기능 | 언제 확인하나 | 조건에 안 맞으면 |
+|---|---|---|
+| Global Exit Criteria | 사용자가 지정한 행동을 하거나 종료 조건에 해당하는 순간 | Canvas에서 나가게 해 이후 여정의 메시지를 모두 중단 |
+| Delivery Validation | 각 메시지를 보내는 시점에 조건을 다시 확인 | 설정에 따라 다름. "Canvas에서 이탈"로 두면 이후 메시지도 중단, "다음 단계로 진행"으로 두면 이번 메시지만 건너뛰고 이후 메시지는 받을 수 있음 |
+
+- **[시험 팁]** 두 기능이 항상 같은 방식으로 여정 전체를 멈추는 것은 아님. Delivery Validation은 설정에 따라 이번 메시지만 건너뛸 수도 있음 [Braze AI 확인 11/20]
 - Global Exit Criteria가 적용된 캔버스의 알맞은 상황: 사용자가 지정한 행동(specified action)을 하면 캔버스에서 나감. 오답: 나간 뒤 메시지 수신, 들어오자마자 메시지 수신 [강의4 00:18~00:19]
 
 ### 전환 이벤트(Conversion Event)
@@ -1161,7 +1169,7 @@
 19. Experiment Path 최대 경로 수(받아쓰기 "패스 5배") [강의4 00:09]
 20. Action Path와 Audience Path 분기 최대 8개(Everyone Else 포함)가 맞는지 [강의4 00:05] [강의4 00:07~00:08]
 21. 딜레이 컴포넌트 최대 31일이 맞는지 [강의4 00:04]
-22. 강의4 연습 문제 3(사용자가 특정 행동을 하면 메시지를 더 받지 않게 하는 기능 2개)의 두 번째 정답이 Delivery Validation인지 [강의4 00:16~00:18]
+22. (확인 완료) 강의4 연습 문제 3의 두 번째 정답은 Delivery Validation. 둘 다 이후 메시지를 막을 수 있지만 방식이 다름 [Braze AI 확인 11/20]. 원래 근거 [강의4 00:16~00:18]
 23. (확인 완료) 24시간 업그레이드 문제에서 Decision Split이 오답인 이유: Decision Split은 도착 시점 조건만 확인하고 스스로 이벤트를 기다리지 않음 [Braze AI 확인 11/20]
 24. (확인 완료) Intelligent Selection은 캠페인과 캔버스 둘 다에 있고, 현재 이름은 Optimize with BrazeAI로 표시될 수 있음 [Braze AI 확인 11/20]. 또 Personalized Variant와 Personalized Path는 새로 만들 때 선택 불가, Delay Group은 현재 Winning Path와 함께 설명 [Braze AI 확인 11/20]. 원래 근거 [강의3 00:15] [강의3 00:22] [예상 Q25] [예상 Q38] [예상 Q55]
 25. (확인 완료) Machine Open은 MPP가 켜진 사용자의 열기(Apple Mail 전용 아님), Upon Email Open 전환은 Machine Open을 뺌, Unique Opens에는 포함 [Braze AI 확인 11/20]. 원래 근거 [강의4 00:44~00:47] [강의4 00:53] [강의5 00:04~00:06] [예상 Q59]
