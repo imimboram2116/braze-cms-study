@@ -101,7 +101,7 @@ mark{background:#cfe0f5;color:inherit;padding:0 2px;border-radius:3px}
 .slide p.ko{margin:0 0 6px}
 #koToggleWrap{display:flex;align-items:center;gap:8px;font-size:14px;margin:-6px 0 12px}
 body.noko .ko{display:none}
-.tabs button{padding:11px 6px;font-size:15px}
+.tabs button{padding:11px 4px;font-size:14px}
 .md{font-size:15px;line-height:1.7}
 .md h1{font-size:20px;margin:6px 0 10px}
 .md h2{font-size:18px;margin:30px 0 8px;padding-top:12px;border-top:2px solid var(--brand)}
@@ -130,6 +130,7 @@ body.noko .ko{display:none}
   </header>
 
   <div class="tabs">
+    <button id="tabCheat">시험 직전</button>
     <button id="tabTheory">이론</button>
     <button id="tabQuiz" class="on">퀴즈 풀기</button>
     <button id="tabStudy">예상문제 정리</button>
@@ -216,6 +217,11 @@ body.noko .ko{display:none}
     <p class="muted">원본: 맥미스쿨 스터디용 노션 페이지 (2026-11-19 옮김). 정답과 해설은 원본 슬라이드에 적힌 그대로다.</p>
   </section>
 
+  <!-- 시험 직전 -->
+  <section id="cheat" class="hidden">
+    <div id="cheatBody" class="card md">불러오는 중...</div>
+  </section>
+
   <!-- 이론 -->
   <section id="theory" class="hidden">
     <div class="card muted">강의 녹음 5개(2026-11-19), 예상문제, 전형 확인용 슬라이드, 대시보드 화면을 합쳐 정리했다. 불렛 끝 [강의1 12:34]는 그 강의 녹음의 시각이다.</div>
@@ -262,7 +268,8 @@ let curSet = "mock";
 
 /* ---------- 탭 ---------- */
 function showTab(t){
-  ["theory", "quiz", "study", "deckView"].forEach(id => $("#" + id).classList.toggle("hidden", id !== t));
+  ["cheat", "theory", "quiz", "study", "deckView"].forEach(id => $("#" + id).classList.toggle("hidden", id !== t));
+  $("#tabCheat").classList.toggle("on", t === "cheat");
   $("#tabTheory").classList.toggle("on", t === "theory");
   $("#tabQuiz").classList.toggle("on", t === "quiz");
   $("#tabStudy").classList.toggle("on", t === "study");
@@ -273,11 +280,19 @@ $("#tabQuiz").onclick = () => showTab("quiz");
 $("#tabStudy").onclick = () => showTab("study");
 $("#tabDeck").onclick = () => showTab("deckView");
 $("#tabTheory").onclick = () => showTab("theory");
+$("#tabCheat").onclick = () => showTab("cheat");
 if(location.hash === "#theory") showTab("theory");
-fetch("theory.md", { cache: "no-store" }).then(r => r.ok ? r.text() : Promise.reject(r.status))
-  .then(md => { $("#theoryBody").innerHTML = marked.parse(md.replace(/~/g, "\\~")).replace(/\[(?:강의\d|예상 |슬라이드 |대시보드 화면|사용자 제공|Braze AI 확인)[^\[\]<]*\]/g, m => `<span class="src">${m}</span>`);
-    document.querySelectorAll("#theoryBody strong").forEach(b => { if(b.textContent.trim() === "[시험 팁]"){ const box = b.closest("li, p, td"); if(box) box.classList.add("tip"); } }); })
-  .catch(() => { $("#theoryBody").textContent = "이론 정리를 불러오지 못했습니다."; });
+if(location.hash === "#cheat") showTab("cheat");
+function renderMd(url, el){
+  fetch(url, { cache: "no-store" }).then(r => r.ok ? r.text() : Promise.reject(r.status))
+    .then(md => {
+      el.innerHTML = marked.parse(md.replace(/~/g, "\\~")).replace(/\[(?:강의\d|예상 |슬라이드 |대시보드 화면|사용자 제공|Braze AI 확인)[^\[\]<]*\]/g, m => `<span class="src">${m}</span>`);
+      el.querySelectorAll("strong").forEach(b => { if(b.textContent.trim() === "[시험 팁]"){ const box = b.closest("li, p, td"); if(box) box.classList.add("tip"); } });
+    })
+    .catch(() => { el.textContent = "불러오지 못했습니다."; });
+}
+renderMd("theory.md", $("#theoryBody"));
+renderMd("cheatsheet.md", $("#cheatBody"));
 
 /* ---------- 예상문제 정리 ---------- */
 (function buildStudy(){
