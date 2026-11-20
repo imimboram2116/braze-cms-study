@@ -572,6 +572,13 @@
 - Personalized Variant 정답 설명: 유사 고객 모델 학습을 위한 초기 테스트를 보내고, 테스트 후 초기 테스트에서 전환한 고객과의 유사성으로 전환 가능성이 가장 높은 메시지를 각 사용자에게 보냄 [예상 Q25]
   - 오답: 초기 테스트가 필요 없다, 테스트 후 가장 우수한 하나를 나머지 모두에게(이것은 Winning), 머신 러닝으로 실시간 행동에 따라 계속 조정 [예상 Q25]
 - 현재 상태 참고: Personalized Variant는 현재 신규 캠페인에서 사용할 수 없음. Intelligent Selection은 "기존 기능"이고, 현재 기능 명칭은 Optimize with BrazeAI를 확인하라고 함 [예상 Q25] [예상 Q38]
+- 현재 제공 상태 [Braze AI 확인 11/20]
+
+| 기능 | 기존 것 | 새로 만들 때 |
+|---|---|---|
+| Personalized Variants | 기존 캠페인에서는 계속 지원 | 새 캠페인에서는 선택할 수 없음 |
+| Personalized Paths | 기존 Experiment Path 단계는 계속 실행 | 새 단계에서는 선택할 수 없음 |
+
 - **[시험 팁]** 거의 대부분은 Winning, Personalized, Selection 등을 고르는 문제. 공통점과 차이점을 알아둘 것 [강의3 00:34]
 - **[시험 팁]** 강의 슬라이드의 그림(표)과 똑같은 문제가 실제 시험에 두 세트 정도 나옴. 표와 숫자만 잘 보면 풀 수 있음 [강의3 00:36~00:37]
 - 우승 변형을 받는 사용자 수를 극대화하는 방법(정답 2개): Winning Variant optimization 사용, Intelligent Selection 켜기. 채널이 이메일 하나로 정해져 있으므로 Intelligent Channel이 아님 [강의3 00:48~00:50] [예상 Q39]
@@ -839,7 +846,16 @@
 - 캔버스의 Delay 스텝이 아니라 Personalized Path에서 설정하는 Delay Group [강의4 00:30]
 - 오답: 메시지 빈도를 높임, 행동과 관계없이 모두에게 같은 메시지, 커스텀 속성으로 사용자를 분류 [강의4 00:31] [예상 Q55]
 - 강사: "딜레이"라는 단어 뜻만 알아도 소거법으로 풀 수 있음 [강의4 00:31]
-- 현재 제공 상태는 확인 필요(기존 방식) [예상 Q55] [예상 개념카드 5]
+- 현재 문서 기준 [Braze AI 확인 11/20]
+  - Delay Group은 지금 문서에서 Personalized Paths가 아니라 **Winning Path**와 함께 설명함
+  - 일회성 진입 Canvas에서 실험 중 일부 사용자를 대기시켰다가 승리 경로(Winning Path)로 보냄
+  - 반복 또는 트리거 Canvas에는 표시되지 않음
+
+> ⚠ 자료 차이: Delay Group이 어느 기능에 붙어 있나
+> - 예상 Q55, 강의4: Personalized Paths를 쓸 때의 Delay Group. 일부를 대기시키고 나머지가 Experiment Path에 들어가 유사 사용자 모델을 학습 [예상 Q55] [강의4 00:29~00:30]
+> - Braze AI(현재 문서): Delay Group은 Winning Path와 함께 설명. 일회성 진입 Canvas에서 일부를 대기시켰다가 승리 경로로 보냄. Personalized Paths는 새 단계에서 선택할 수 없음 [Braze AI 확인 11/20]
+> - 두 설명 모두 "일부 사용자를 대기시킨다"는 점은 같음. 시험 문제가 예전 문제 은행에서 나오면 예상 Q55 보기(②)가 정답으로 나올 수 있음 [강의1 00:53]
+
 
 ### Message Step(메시지 스텝)과 딜리버리 설정
 
@@ -1053,7 +1069,7 @@
 21. 딜레이 컴포넌트 최대 31일이 맞는지 [강의4 00:04]
 22. 강의4 연습 문제 3(사용자가 특정 행동을 하면 메시지를 더 받지 않게 하는 기능 2개)의 두 번째 정답이 Delivery Validation인지 [강의4 00:16~00:18]
 23. (확인 완료) 24시간 업그레이드 문제에서 Decision Split이 오답인 이유: Decision Split은 도착 시점 조건만 확인하고 스스로 이벤트를 기다리지 않음 [Braze AI 확인 11/20]
-24. Intelligent Selection이 캠페인과 캔버스 중 어디 용어인지, 현재 이름(Optimize with BrazeAI)과 Personalized Variant, Personalized Path Delay Group의 현재 제공 여부 [강의3 00:15] [강의3 00:22] [예상 Q25] [예상 Q38] [예상 Q55]
+24. Intelligent Selection이 캠페인과 캔버스 중 어디 용어인지, 현재 이름(Optimize with BrazeAI). (확인 완료) Personalized Variant와 Personalized Path는 새로 만들 때 선택 불가, Delay Group은 현재 Winning Path와 함께 설명 [Braze AI 확인 11/20]. 원래 근거 [강의3 00:15] [강의3 00:22] [예상 Q25] [예상 Q38] [예상 Q55]
 25. Machine Opens의 정확한 정의(Apple Mail 전용 vs MPP 영향 열람)와 Upon Open이 머신 오픈을 빼는지 [강의4 00:44~00:47] [강의4 00:53] [강의5 00:04~00:06] [예상 Q59]
 26. Sunset policy가 지금도 Braze 기능으로 있는지(강사도 확인이 필요하다고 함) [강의4 00:27~00:28]
 27. 시험에 한국어 버전이 있는지, 시험 중 한영 전환이 되는지 [강의1 00:00] [강의3 00:04] [강의3 00:31] [강의5 00:28]
