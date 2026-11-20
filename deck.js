@@ -251,6 +251,7 @@ const DECK_SLIDES = [
 ];
 
 // 퀴즈용. 보기와 정답은 위 슬라이드 그대로 뽑았다.
+// type "match": 연산자와 뜻을 짝 맞추는 문제(9번 슬라이드). 다섯 개를 모두 맞혀야 정답.
 // type "card": 보기 없이 답만 있는 슬라이드. 답을 떠올린 뒤 "답 확인"을 눌러 스스로 맞힘, 틀림을 고른다.
 // 8번 슬라이드(AND 와 OR 조합하기)는 정답이 적혀 있지 않아 퀴즈에서 뺐다.
 const SA_STEM = "세그먼트 애널리틱스는 대시보드를 통해 확인이 가능합니다.\n다음 각 항목들에 해당하는 True | False (T/F)를 고르세요.\n\n";
@@ -269,8 +270,8 @@ const DECK_QUESTIONS = [
   { d: "Segment", s: 7, q: "Which of the following statements about frequency capping is true?",
     o: ["You can only set one cap per message type", "To enable frequency capping, navigate to the Audience tab", "Each frequency cap rule line is connected using an AND operator", "The frequency capping time frame can be measured for a maximum of 190 days"],
     accept: [[3]], e: [] },
-  { d: "Segment", s: 9, type: "card", q: "다음 필터 연산자(operators)들을 이용해 어떤 세그먼트로 구성하실 수 있나요?\n• Exactly\n• Does not equal\n• Is any of\n• less than\n• more than",
-    ans: ["Exactly :입력된 조건값과 일치하면 포함", "Does not equal : 입력된 조건값과 불일치하면 포함", "Is any of : 조건값 중 한개라도 일치하면 포함", "less than : 조건값 미만일 때(범위) 포함", "more than : 조건값 초과일 때(범위)포함"] },
+  { d: "Segment", s: 9, type: "match", q: "다음 필터 연산자(operators)들을 이용해 어떤 세그먼트로 구성하실 수 있나요?",
+    pairs: [["Exactly", "입력된 조건값과 일치하면 포함"], ["Does not equal", "입력된 조건값과 불일치하면 포함"], ["Is any of", "조건값 중 한개라도 일치하면 포함"], ["less than", "조건값 미만일 때(범위) 포함"], ["more than", "조건값 초과일 때(범위)포함"]] },
   { d: "Segment", s: 11, q: SA_STEM + "Whether this combination of messaging impacts revenue and purchases over time", o: ["T", "F"], accept: [[1]], e: [] },
   { d: "Segment", s: 11, q: SA_STEM + "Whether this combination of messaging impacts session starts over time", o: ["T", "F"], accept: [[1]], e: [] },
   { d: "Segment", s: 11, q: SA_STEM + "Whether this combination of messaging impacts custom events logged over time.", o: ["T", "F"], accept: [[1]], e: [] },
@@ -325,5 +326,5 @@ const DECK_QUESTIONS = [
 DECK_QUESTIONS.forEach((x, i) => {
   x.n = i + 1;
   x.title = `슬라이드 ${x.s}`;
-  if (x.type !== "card") { x.pick = x.accept[0].length; x.a = x.accept[0].map(k => "①②③④⑤"[k-1]).join(", "); }
+  if (!x.type) { x.pick = x.accept[0].length; x.a = x.accept[0].map(k => "①②③④⑤"[k-1]).join(", "); }
 });

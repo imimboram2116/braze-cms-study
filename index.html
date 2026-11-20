@@ -38,7 +38,13 @@ th,td{text-align:left;padding:8px 6px;border-bottom:1px solid var(--line)}
 .chip{display:inline-block;font-size:12px;font-weight:600;padding:2px 8px;border-radius:99px;background:var(--brand-soft);color:var(--brand);margin-right:4px}
 .chip.warn{background:var(--warn-soft);color:var(--warn)}
 .concepts{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:10px}
-.concepts div{border:1px solid var(--line);border-radius:10px;padding:10px 12px;font-size:14px}
+.concepts div{border:1px solid var(--line);border-radius:10px;padding:10px 12px;font-size:14px;white-space:pre-line}
+.mrow{display:flex;align-items:center;gap:10px;padding:10px 12px;margin-bottom:8px;border:1.5px solid var(--line);border-radius:10px}
+.mrow b{flex:none;width:120px}
+.mrow select{width:100%;font:inherit;font-size:14px;padding:8px;border-radius:8px;border:1px solid var(--line);background:var(--card);color:var(--ink)}
+.mrow.right{border-color:var(--ok);background:var(--ok-soft)}
+.mrow.wrong{border-color:var(--bad);background:var(--bad-soft)}
+.mrow .fix{display:block;font-size:13px;color:var(--ok);margin-top:4px}
 .concepts b{display:block;color:var(--brand);font-size:13px;margin-bottom:2px}
 details{background:var(--card);border:1px solid var(--line);border-radius:12px;margin-bottom:8px}
 summary{cursor:pointer;padding:12px 14px;font-weight:600;font-size:15px;list-style:none}
@@ -332,6 +338,18 @@ function render(){
   hide("nextRow", true); hide("selfRow", true);
   $("#nextBtn").textContent = idx === deck.length - 1 ? "결과 보기" : "다음 문제";
 
+  if(q.type === "match"){
+    const means = shuffle(q.pairs.map(p => p[1]));
+    $("#opts").innerHTML = q.pairs.map((p, i) => `<div class="mrow" data-i="${i}"><b>${esc(p[0])}</b><div style="flex:1;min-width:0"><select><option value="">뜻 고르기</option>${means.map(m => `<option>${esc(m)}</option>`).join("")}</select></div></div>`).join("");
+    document.querySelectorAll(".mrow select").forEach(sel => sel.onchange = () => {
+      $("#gradeBtn").disabled = [...document.querySelectorAll(".mrow select")].some(x => !x.value);
+    });
+    $("#multiHint").textContent = "연산자마다 맞는 뜻을 고른 뒤 채점하기를 누르세요.";
+    hide("revealRow", true); hide("gradeRow", false);
+    $("#gradeBtn").disabled = true; $("#gradeBtn").onclick = gradeMatch;
+    return;
+  }
+  $("#gradeBtn").onclick = grade;
   if(q.type === "card"){
     $("#opts").innerHTML = ""; $("#multiHint").textContent = "";
     hide("gradeRow", true); hide("revealRow", false);
@@ -354,7 +372,27 @@ function pick(k){
   document.querySelectorAll(".opt").forEach(b => b.classList.toggle("sel", chosen.has(+b.dataset.k)));
   $("#gradeBtn").disabled = chosen.size !== q.pick;
 }
-$("#gradeBtn").onclick = grade;
+function gradeMatch(){
+  const q = deck[idx];
+  let all = true;
+  document.querySelectorAll(".mrow").forEach(row => {
+    const i = +row.dataset.i, sel = row.querySelector("select"), ok = sel.value === q.pairs[i][1];
+    sel.disabled = true;
+    row.classList.add(ok ? "right" : "wrong");
+    if(!ok){ all = false; row.querySelector("div").insertAdjacentHTML("beforeend", `<span class="fix">정답: ${esc(q.pairs[i][1])}</span>`); }
+  });
+  results.push({ n: q.n, d: q.d, ok: all, scored: true });
+  hide("gradeRow", true); $("#multiHint").textContent = "";
+  const right = document.querySelectorAll(".mrow.right").length;
+  $("#verdict").innerHTML = `<div class="verdict ${all ? "ok" : "bad"}">
+      <div class="t">${all ? "정답!" : "오답"} <span style="font-size:14px;font-weight:600">(${right} / ${q.pairs.length} 맞힘)</span></div>
+      <div class="muted">A.</div>
+      <ul>${q.pairs.map(p => `<li><b>${esc(p[0])}</b> : ${esc(p[1])}</li>`).join("")}</ul>
+    </div>`;
+  hide("nextRow", false);
+  const s = results.filter(r => r.scored);
+  $("#qScore").textContent = `맞힘 ${s.filter(r => r.ok).length} / ${s.length}`;
+}
 
 function grade(){
   const q = deck[idx];
