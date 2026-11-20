@@ -588,6 +588,27 @@
 > ⚠ 자료 차이: Intelligent Selection은 캠페인 용어인가 캔버스 용어인가
 > - 강의3 **[시험 팁]**: 캠페인에서는 보통 "인텔리전트 변형(Variant)", 캔버스 지문이면 보기에 "인텔리전트 셀렉션"으로 나옴. 지문이 캔버스면 셀렉션, 캠페인이면 변형을 고르라고 함 [강의3 00:15]
 > - 강의3 다른 설명과 예상문제: 셀렉션은 캠페인과 캔버스 변형 모두에서 쓰임 [강의3 00:22]. 이메일 캠페인 문제의 정답이 Intelligent Selection [강의3 00:40~00:41] [예상 Q38] [예상 Q39]
+> - **결론 (Braze AI 확인)**: 캠페인과 캔버스 둘 다에 있음. 현재 화면 이름은 Optimize with BrazeAI일 수 있음. 캔버스에서는 Canvas 전체 배리언트를, 캠페인에서는 메시지 배리언트를 비교해 최적화 [Braze AI 확인 11/20]
+
+#### Intelligent Selection 자세히 [Braze AI 확인 11/20]
+
+- 정의: 여러 배리언트의 성과를 비교하면서, 전환이 더 잘 일어나는 배리언트에 사용자를 더 많이 배정하는 자동 최적화 기능
+- 현재 이름: **Optimize with BrazeAI**로 표시될 수 있음
+- 캔버스에서 작동하는 순서 (예: 배리언트 A 이메일 중심 온보딩, 배리언트 B 푸시 중심 온보딩, 전환 목표 가입 완료)
+  1. 처음에는 두 배리언트에 사용자를 배정하고 Braze가 전환 성과를 비교
+  2. 초기 전환 기한이 지나면 **12시간마다** 성과를 검토해 더 좋은 배리언트에 신규 사용자를 더 많이 배정
+  3. 명확한 승자가 정해지면 이후 들어오는 사용자는 모두 그 배리언트로
+- 켜는 조건: Canvas에 배리언트 **최소 2개**, 전환 이벤트 **최소 1개**
+- 켜는 곳: 배리언트 비율을 골라 **Edit Variant Distribution**에서 켬
+- 잘 맞는 경우: 새 사용자가 자주 들어오는 Canvas
+- 캠페인에도 Optimize with BrazeAI가 있음. 이때는 Canvas 전체 여정이 아니라 캠페인의 메시지 배리언트를 비교해 최적화
+
+| 구분 | Intelligent Selection | Winning Path |
+|---|---|---|
+| 비교 대상 | Canvas 전체 배리언트 | Canvas 안 Experiment Paths 단계의 경로 |
+| 사용자 배정 | 성과에 따라 배정 비율을 점차 조정 | 실험 기간이 끝난 뒤 승리 경로로 배정 |
+| 설정 위치 | Canvas 배리언트 분배 설정 (Edit Variant Distribution) | Experiment Paths 단계 안 |
+| 개인화인가 | 아님 (전체에서 성과 좋은 안을 찾음) | 아님 (전체에서 성과 좋은 안을 찾음) |
 
 ### 캔버스 용어: Variant가 아니라 Path
 
@@ -1100,7 +1121,7 @@
 21. 딜레이 컴포넌트 최대 31일이 맞는지 [강의4 00:04]
 22. 강의4 연습 문제 3(사용자가 특정 행동을 하면 메시지를 더 받지 않게 하는 기능 2개)의 두 번째 정답이 Delivery Validation인지 [강의4 00:16~00:18]
 23. (확인 완료) 24시간 업그레이드 문제에서 Decision Split이 오답인 이유: Decision Split은 도착 시점 조건만 확인하고 스스로 이벤트를 기다리지 않음 [Braze AI 확인 11/20]
-24. Intelligent Selection이 캠페인과 캔버스 중 어디 용어인지, 현재 이름(Optimize with BrazeAI). (확인 완료) Personalized Variant와 Personalized Path는 새로 만들 때 선택 불가, Delay Group은 현재 Winning Path와 함께 설명 [Braze AI 확인 11/20]. 원래 근거 [강의3 00:15] [강의3 00:22] [예상 Q25] [예상 Q38] [예상 Q55]
+24. (확인 완료) Intelligent Selection은 캠페인과 캔버스 둘 다에 있고, 현재 이름은 Optimize with BrazeAI로 표시될 수 있음 [Braze AI 확인 11/20]. 또 Personalized Variant와 Personalized Path는 새로 만들 때 선택 불가, Delay Group은 현재 Winning Path와 함께 설명 [Braze AI 확인 11/20]. 원래 근거 [강의3 00:15] [강의3 00:22] [예상 Q25] [예상 Q38] [예상 Q55]
 25. Machine Opens의 정확한 정의(Apple Mail 전용 vs MPP 영향 열람)와 Upon Open이 머신 오픈을 빼는지 [강의4 00:44~00:47] [강의4 00:53] [강의5 00:04~00:06] [예상 Q59]
 26. Sunset policy가 지금도 Braze 기능으로 있는지(강사도 확인이 필요하다고 함) [강의4 00:27~00:28]
 27. 시험에 한국어 버전이 있는지, 시험 중 한영 전환이 되는지 [강의1 00:00] [강의3 00:04] [강의3 00:31] [강의5 00:28]
