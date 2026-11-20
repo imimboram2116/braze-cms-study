@@ -115,6 +115,7 @@ body.noko .ko{display:none}
 .md blockquote{margin:8px 0;padding:8px 12px;background:var(--warn-soft);border-left:4px solid var(--warn);border-radius:6px}
 .md blockquote p{margin:2px 0}
 .md code{background:var(--brand-soft);padding:1px 4px;border-radius:4px}
+.md .src{color:var(--sub);opacity:.75;font-size:12px;font-weight:400}
 </style>
 </head>
 <body>
@@ -268,7 +269,7 @@ $("#tabDeck").onclick = () => showTab("deckView");
 $("#tabTheory").onclick = () => showTab("theory");
 if(location.hash === "#theory") showTab("theory");
 fetch("theory.md", { cache: "no-store" }).then(r => r.ok ? r.text() : Promise.reject(r.status))
-  .then(md => { $("#theoryBody").innerHTML = marked.parse(md.replace(/~/g, "\\~")); })
+  .then(md => { $("#theoryBody").innerHTML = marked.parse(md.replace(/~/g, "\\~")).replace(/\[(?:강의\d|예상 |슬라이드 |대시보드 화면|사용자 제공|Braze AI 확인)[^\[\]<]*\]/g, m => `<span class="src">${m}</span>`); })
   .catch(() => { $("#theoryBody").textContent = "이론 정리를 불러오지 못했습니다."; });
 
 /* ---------- 예상문제 정리 ---------- */
