@@ -116,6 +116,10 @@ body.noko .ko{display:none}
 .md blockquote p{margin:2px 0}
 .md code{background:var(--brand-soft);padding:1px 4px;border-radius:4px}
 .md .src{color:var(--sub);opacity:.75;font-size:12px;font-weight:400}
+.md .tip{color:#c2185b}
+.md .tip strong{color:#c2185b}
+.md .tip li:not(.tip){color:var(--ink)}
+@media (prefers-color-scheme: dark){ .md .tip, .md .tip strong{color:#f48fb1} }
 </style>
 </head>
 <body>
@@ -196,7 +200,9 @@ body.noko .ko{display:none}
       <h3>꼭 외울 것</h3>
       <ul style="margin:0;padding-left:18px;font-size:14px">
         <li>세그먼트 분석 추적(Segment Analytics) 최대 개수: 워크스페이스당 <b>25개</b></li>
+        <li>세그먼트 익스텐션(Segment Extensions) 활성 최대 개수: <b>50개</b> (예전 25개에서 늘어남, 대시보드 0 / 50)</li>
         <li>최대 게재빈도 규칙 최대 개수: <b>10개</b> (25개와 헷갈리지 말 것)</li>
+        <li>글로벌 컨트롤 그룹: 권장 <b>10% 이하</b>, 설정 최대 <b>15%</b></li>
         <li><code>default</code>는 값이 없을 때 대체값, <code>capitalize</code>는 첫 글자 대문자</li>
         <li>API 트리거 캠페인은 <code>api_trigger_properties</code>, 캔버스 진입은 <code>canvas_entry_properties</code></li>
         <li>Upon Open 방식은 기계적 열람을 제외함</li>
@@ -269,7 +275,8 @@ $("#tabDeck").onclick = () => showTab("deckView");
 $("#tabTheory").onclick = () => showTab("theory");
 if(location.hash === "#theory") showTab("theory");
 fetch("theory.md", { cache: "no-store" }).then(r => r.ok ? r.text() : Promise.reject(r.status))
-  .then(md => { $("#theoryBody").innerHTML = marked.parse(md.replace(/~/g, "\\~")).replace(/\[(?:강의\d|예상 |슬라이드 |대시보드 화면|사용자 제공|Braze AI 확인)[^\[\]<]*\]/g, m => `<span class="src">${m}</span>`); })
+  .then(md => { $("#theoryBody").innerHTML = marked.parse(md.replace(/~/g, "\\~")).replace(/\[(?:강의\d|예상 |슬라이드 |대시보드 화면|사용자 제공|Braze AI 확인)[^\[\]<]*\]/g, m => `<span class="src">${m}</span>`);
+    document.querySelectorAll("#theoryBody strong").forEach(b => { if(b.textContent.trim() === "[시험 팁]"){ const box = b.closest("li, p, td"); if(box) box.classList.add("tip"); } }); })
   .catch(() => { $("#theoryBody").textContent = "이론 정리를 불러오지 못했습니다."; });
 
 /* ---------- 예상문제 정리 ---------- */
