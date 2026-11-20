@@ -1058,6 +1058,16 @@
 > ⚠ 자료 차이: Machine Opens 정의
 > - 강의4, 강의5: Apple Mail에서 기계가 연 것, Apple Mail 전용 [강의4 00:44~00:47] [강의5 00:04]
 > - 예상 Q59: MPP 영향을 받은 열람이며 사람과 기계를 완전히 구분하지 않음. 모든 Apple Mail 열람이 Machine Open이고 나머지가 모두 Other Open이라고 단정할 수 없음. 정답 ③은 "가장 가깝지만 정확한 정의는 아님" [예상 Q59]
+> - **결론 (Braze AI 확인)**: 예상 Q59 설명이 맞음. Apple Mail 전용이 아니라 MPP 기준 [Braze AI 확인 11/20]
+
+- Machine Open과 Other Open 정리 [Braze AI 확인 11/20]
+
+| 구분 | 뜻 | 주의 |
+|---|---|---|
+| Machine Open | Apple Mail Privacy Protection(MPP)이 켜진 사용자의 이메일 열기 | Apple의 자동 미리 불러오기뿐 아니라 실제 사용자가 연 것도 들어갈 수 있음. 모든 Apple Mail 열기가 Machine Open인 것은 아님 |
+| Other Open | MPP 영향을 받지 않는 열기 | 봇 활동이 들어갈 수 있어 모두 실제 사람의 열기라고 단정할 수 없음 |
+
+- **[시험 팁]** 예상 Q59에서 "기계적 열람은 Apple Mail 전용"(③)은 보기 중 가장 가까울 뿐 정확한 정의가 아님. 정의를 묻는 보기에 "MPP"가 나오면 그쪽을 고를 것 [예상 Q59] [Braze AI 확인 11/20]
 
 ### SMS/MMS/RCS 퍼포먼스
 
@@ -1089,6 +1099,15 @@
 > ⚠ 자료 차이: Upon Open과 머신 오픈
 > - 강의4: 오픈 기준은 Apple Mail의 머신 오픈이라는 변수가 있어 100% 믿기 애매하다 [강의4 00:53]
 > - 강의5, 예상 Q56: Upon Open은 머신 오픈을 제외한 전환 [강의5 00:06] [예상 Q56]
+> - **결론 (Braze AI 확인)**: Upon Email Open 전환 기여 방식은 Machine Open을 **제외**함. 강의5, 예상 Q56이 맞음 [Braze AI 확인 11/20]
+
+- 같은 이메일인데 열기 수가 화면마다 다른 이유 [Braze AI 확인 11/20]
+
+| 화면 | Machine Open |
+|---|---|
+| Upon Email Open 전환 기여 | 뺌 |
+| 일반 이메일 분석의 Unique Opens | 넣음 |
+
 
 ### 지표를 해석할 때 주의
 
@@ -1131,7 +1150,7 @@
 22. 강의4 연습 문제 3(사용자가 특정 행동을 하면 메시지를 더 받지 않게 하는 기능 2개)의 두 번째 정답이 Delivery Validation인지 [강의4 00:16~00:18]
 23. (확인 완료) 24시간 업그레이드 문제에서 Decision Split이 오답인 이유: Decision Split은 도착 시점 조건만 확인하고 스스로 이벤트를 기다리지 않음 [Braze AI 확인 11/20]
 24. (확인 완료) Intelligent Selection은 캠페인과 캔버스 둘 다에 있고, 현재 이름은 Optimize with BrazeAI로 표시될 수 있음 [Braze AI 확인 11/20]. 또 Personalized Variant와 Personalized Path는 새로 만들 때 선택 불가, Delay Group은 현재 Winning Path와 함께 설명 [Braze AI 확인 11/20]. 원래 근거 [강의3 00:15] [강의3 00:22] [예상 Q25] [예상 Q38] [예상 Q55]
-25. Machine Opens의 정확한 정의(Apple Mail 전용 vs MPP 영향 열람)와 Upon Open이 머신 오픈을 빼는지 [강의4 00:44~00:47] [강의4 00:53] [강의5 00:04~00:06] [예상 Q59]
+25. (확인 완료) Machine Open은 MPP가 켜진 사용자의 열기(Apple Mail 전용 아님), Upon Email Open 전환은 Machine Open을 뺌, Unique Opens에는 포함 [Braze AI 확인 11/20]. 원래 근거 [강의4 00:44~00:47] [강의4 00:53] [강의5 00:04~00:06] [예상 Q59]
 26. Sunset policy가 지금도 Braze 기능으로 있는지(강사도 확인이 필요하다고 함) [강의4 00:27~00:28]
 27. 시험에 한국어 버전이 있는지, 시험 중 한영 전환이 되는지 [강의1 00:00] [강의3 00:04] [강의3 00:31] [강의5 00:28]
 28. 예상문제 중 정답이 확정되지 않은 문항: Q5(세그먼트에서 접근 가능한 데이터), Q11(CSV 두 번째 정답), Q26(테스트 변수, 잠정) [예상 Q5] [예상 Q11] [예상 Q26]
