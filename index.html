@@ -266,6 +266,7 @@ $("#tabQuiz").onclick = () => showTab("quiz");
 $("#tabStudy").onclick = () => showTab("study");
 $("#tabDeck").onclick = () => showTab("deckView");
 $("#tabTheory").onclick = () => showTab("theory");
+if(location.hash === "#theory") showTab("theory");
 fetch("theory.md", { cache: "no-store" }).then(r => r.ok ? r.text() : Promise.reject(r.status))
   .then(md => { $("#theoryBody").innerHTML = marked.parse(md.replace(/~/g, "\\~")); })
   .catch(() => { $("#theoryBody").textContent = "이론 정리를 불러오지 못했습니다."; });
