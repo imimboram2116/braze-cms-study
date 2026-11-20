@@ -1039,6 +1039,19 @@
 > - 강의5: Email Insights는 최대 6개월, Overview는 커스텀 레인지로 1년이 넘는 데이터 가능. 지난 1년 반송과 전달 비교 문제의 답은 Overview [강의5 00:00]
 > - 강의4: 커스텀 레인지로 1년, 2년보다 오래된 데이터도 볼 수 있음 [강의4 00:41~00:43]
 > - 예상 Q58: 정답 "확정 보류". 해설은 Overview에서 "최대 지난 1년"을 고를 수 있다고 씀 [예상 Q58]
+> - **Braze AI 확인**: 지난 1년의 발송 성공과 반송 지표를 보려면 **Email Performance**가 가장 알맞음. Email Insights와는 별도 화면이며 배송률, 반송률과 건수를 보여 줌. 다만 두 지표를 하나의 그래프에서 비교할 수 있는지는 문서로 확인 안 됨 [Braze AI 확인 11/20]
+> - 예상 Q58의 보기에는 "Email Performance"가 없음. 보기 중에서는 **④ Overview**로 추정. 근거: 강의4에서 Overview는 이메일 퍼포먼스 화면의 탭이고, 강의5가 지난 1년 문제의 답을 Overview라고 했고, 예상 Q58 해설도 같은 내용. 확신 80%
+
+- 화면별 조회 기간 [Braze AI 확인 11/20]
+
+| 화면 | 조회 기간 |
+|---|---|
+| Email Insights | 최대 최근 6개월 |
+| Engagement by Device | Email Insights 안의 보고서. 최대 최근 6개월 |
+| Deliverability Center | 전체 공통 최대 기간은 확인 안 됨. Google Postmaster 데이터는 최근 30일을 가져옴 |
+| Overview | 어떤 Overview인지에 따라 다름. 개별 캠페인 분석은 기본 최근 90일이고 조정 가능하지만 최대 기간은 확인 안 됨 |
+| Email Performance | 최대 1년 전까지 |
+
 
 ### Machine Opens(머신 오픈)와 Other Opens(기타 오픈)
 
@@ -1136,7 +1149,7 @@
 8. 세그먼트 필터 기본 평가 기간이 30일인지 [강의1 00:16] [강의1 00:20]
 9. 게재빈도 제한 메뉴 위치(강의1 "Settings > Global Message Settings, 최근 UI 변동", 슬라이드 7 "Audience tab"은 오답) [강의1 01:02] [슬라이드 7]
 10. (확인 완료) 게재빈도 제한 규칙 최대 개수: 워크스페이스당 최대 10개 [Braze AI 확인 11/20]
-11. 이메일 성과 조회 기간: Email Insights 최대 6개월, Overview 최대 1년인지 1년 넘게 되는지, 예상 Q58 정답 [강의5 00:00] [강의4 00:41~00:43] [예상 Q58]
+11. (부분 확인) Email Insights 최대 6개월, Email Performance 최대 1년, 지난 1년 발송 성공과 반송은 Email Performance가 가장 알맞음 [Braze AI 확인 11/20]. 남은 것: 예상 Q58 보기에 Email Performance가 없어 정답은 ④ Overview로 추정(확신 80%). 원래 근거 [강의5 00:00] [강의4 00:41~00:43] [예상 Q58]
 12. Segment Insights가 Segment Analytics로 통합됐는지, 아직 리포트 메뉴에 있는지 [강의1 00:53] [강의4 00:36]
 13. 익스텐션 자동 갱신 옵션의 현재 이름(강의1 "Enable Refresh") [강의1 00:42~00:45]. (확인 완료) 갱신 시각: Incremental refresh 일일 자동 재생성은 회사 시간대 자정(최대 1시간 지연), 일반 예약 갱신은 설정한 시간(회사 시간대, 처리 최대 60분) [Braze AI 확인 11/20]
 14. (확인 완료) Full refresh에 CDI는 필수 아님. Braze Snowflake 데이터만으로 가능하고 CDI는 외부 데이터 웨어하우스용 별도 옵션 [Braze AI 확인 11/20]. 남은 것: Snowflake 사용에 별도 계약이 필요한지(강의1 Q&A에서 강사는 "맞다"고 답함) [강의1 00:40~00:41] [대시보드 화면 11/20] [사용자 제공 설명]
